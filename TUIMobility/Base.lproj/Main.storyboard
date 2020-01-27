@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.16" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.12"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -9,16 +13,88 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BYZ-38-t0r" customClass="ViewController" customModule="TUIMobility" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <subviews>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Departure" textAlignment="center" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="mGz-8h-0Ld" customClass="CustomSearchTextField" customModule="TUIMobility" customModuleProvider="target">
+                                <rect key="frame" x="46" y="111" width="321" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="APl-KU-D0H"/>
+                                    <constraint firstAttribute="width" constant="321" id="yCj-7j-cp1"/>
+                                </constraints>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="£" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ERh-3T-wig">
+                                <rect key="frame" x="46" y="349" width="320" height="39.5"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="39.5" id="fJa-YM-Ni7"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="33"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7aD-Rz-Hx0" customClass="RouteFlight" customModule="TUIMobility" customModuleProvider="target">
+                                <rect key="frame" x="47" y="578" width="321" height="204.5"/>
+                                <subviews>
+                                    <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="uM1-QU-Mrl">
+                                        <rect key="frame" x="0.0" y="0.0" width="321" height="205"/>
+                                    </mapView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="uM1-QU-Mrl" firstAttribute="leading" secondItem="7aD-Rz-Hx0" secondAttribute="leading" id="Gsz-K4-mOx"/>
+                                    <constraint firstAttribute="width" constant="321" id="ZbZ-8l-IBx"/>
+                                    <constraint firstAttribute="trailing" secondItem="uM1-QU-Mrl" secondAttribute="trailing" id="mIh-SU-Uup"/>
+                                    <constraint firstAttribute="height" constant="204.5" id="oWi-wW-Ptl"/>
+                                    <constraint firstAttribute="bottom" secondItem="uM1-QU-Mrl" secondAttribute="bottom" constant="-0.5" id="p9e-x8-uPB"/>
+                                    <constraint firstItem="uM1-QU-Mrl" firstAttribute="top" secondItem="7aD-Rz-Hx0" secondAttribute="top" id="wqS-se-wUV"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="routeToAirport" destination="uM1-QU-Mrl" id="b4P-KJ-PuG"/>
+                                </connections>
+                            </view>
+                            <textField opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Destination" textAlignment="center" clearsOnBeginEditing="YES" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="7iW-bN-Fv8" customClass="CustomSearchTextField" customModule="TUIMobility" customModuleProvider="target">
+                                <rect key="frame" x="47" y="221" width="321" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="raM-3o-8Vf"/>
+                                    <constraint firstAttribute="width" constant="321" id="yuW-7V-mHE"/>
+                                </constraints>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                        </subviews>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="7iW-bN-Fv8" secondAttribute="trailing" constant="46" id="IvZ-as-bmv"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="mGz-8h-0Ld" secondAttribute="trailing" constant="47" id="Tcy-s7-8mn"/>
+                            <constraint firstItem="7iW-bN-Fv8" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="47" id="WXl-wh-7Yp"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="ERh-3T-wig" secondAttribute="trailing" constant="47" id="Xpy-AI-F5h"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="7aD-Rz-Hx0" secondAttribute="bottom" constant="79.5" id="Y8J-mJ-hel"/>
+                            <constraint firstItem="ERh-3T-wig" firstAttribute="top" secondItem="7iW-bN-Fv8" secondAttribute="bottom" constant="98" id="a4R-0d-AzW"/>
+                            <constraint firstItem="mGz-8h-0Ld" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="46" id="aAy-Pm-742"/>
+                            <constraint firstItem="ERh-3T-wig" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="47" id="b6i-Ik-DCt"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="7aD-Rz-Hx0" secondAttribute="trailing" constant="46" id="cMC-z7-OWF"/>
+                            <constraint firstItem="7aD-Rz-Hx0" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="47" id="fcO-zP-HjB"/>
+                            <constraint firstItem="7iW-bN-Fv8" firstAttribute="top" secondItem="mGz-8h-0Ld" secondAttribute="bottom" constant="80" id="jMr-Uw-X6N"/>
+                            <constraint firstItem="mGz-8h-0Ld" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="67" id="tLs-Yg-wUb"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <connections>
+                        <outlet property="fromSearchTextfield" destination="mGz-8h-0Ld" id="x28-xw-qyw"/>
+                        <outlet property="priceLabel" destination="ERh-3T-wig" id="Vfl-Oo-tGw"/>
+                        <outlet property="routeMap" destination="7aD-Rz-Hx0" id="Hpr-vh-sri"/>
+                        <outlet property="toSearchTextfield" destination="7iW-bN-Fv8" id="0Tj-RZ-1bh"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="137.68115942028987" y="118.52678571428571"/>
         </scene>
     </scenes>
 </document>
