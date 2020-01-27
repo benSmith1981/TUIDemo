@@ -88,7 +88,9 @@ extension ViewController: filterSearch {
     
     func clearMap() {
         DispatchQueue.main.async {
-            self.routeMap.routeToAirport.removeOverlays(self.routeMap.routeToAirport.overlays)
+            self.routeMap.flightRoute.removeOverlays(self.routeMap.flightRoute.overlays)
+            self.routeMap.flightRoute.removeAnnotations(self.routeMap.flightRoute.annotations)
+
         }
     }
 }

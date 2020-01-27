@@ -54,7 +54,7 @@
                                     <constraint firstItem="uM1-QU-Mrl" firstAttribute="top" secondItem="7aD-Rz-Hx0" secondAttribute="top" id="wqS-se-wUV"/>
                                 </constraints>
                                 <connections>
-                                    <outlet property="routeToAirport" destination="uM1-QU-Mrl" id="b4P-KJ-PuG"/>
+                                    <outlet property="flightRoute" destination="uM1-QU-Mrl" id="b4P-KJ-PuG"/>
                                 </connections>
                             </view>
                             <textField opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Destination" textAlignment="center" clearsOnBeginEditing="YES" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="7iW-bN-Fv8" customClass="CustomSearchTextField" customModule="TUIMobility" customModuleProvider="target">

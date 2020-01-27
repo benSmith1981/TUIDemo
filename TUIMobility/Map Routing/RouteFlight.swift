@@ -13,13 +13,13 @@ import Foundation
 
 class RouteFlight: UIView, MKMapViewDelegate, CLLocationManagerDelegate {
     
-    @IBOutlet weak var routeToAirport: MKMapView!
+    @IBOutlet weak var flightRoute: MKMapView!
     private var fromCoord = CLLocationCoordinate2D()
     private var toCoord = CLLocationCoordinate2D()
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.routeToAirport.delegate = self
+        self.flightRoute.delegate = self
     }
     
     func route(flightConnection: Connection) {
@@ -29,9 +29,21 @@ class RouteFlight: UIView, MKMapViewDelegate, CLLocationManagerDelegate {
                                          longitude: flightConnection.coordinates.to.long)
         DispatchQueue.main.async {
             let polyline = MKPolyline(coordinates:[self.fromCoord, self.toCoord], count: 2)
-            self.routeToAirport.setRegion(MKCoordinateRegion(self.getRegionRectFor(route: polyline)), animated: true)
-            self.routeToAirport.addOverlay(polyline)
+            self.addAnnotations(flightConnection: flightConnection)
+            self.flightRoute.setRegion(self.flightRoute.regionThatFits(MKCoordinateRegion(self.getRegionRectFor(route: polyline))),
+                                          animated: true)
+            self.flightRoute.addOverlay(polyline)
         }
+    }
+    
+    func addAnnotations(flightConnection: Connection) {
+        let fromAnnotation = MKPointAnnotation.init()
+        let toAnnotation = MKPointAnnotation.init()
+        toAnnotation.title = flightConnection.to
+        fromAnnotation.title = flightConnection.from
+        fromAnnotation.coordinate = self.fromCoord
+        toAnnotation.coordinate = self.toCoord
+        self.flightRoute.addAnnotations([fromAnnotation,toAnnotation])
     }
     
     func getRegionRectFor(route: MKPolyline) ->  MKMapRect{
@@ -42,7 +54,7 @@ class RouteFlight: UIView, MKMapViewDelegate, CLLocationManagerDelegate {
         
         regionRect.size.width += wPadding
         regionRect.size.height += hPadding
-        
+       
         regionRect.origin.x -= wPadding / 2
         regionRect.origin.y -= hPadding / 2
         return regionRect
@@ -50,10 +62,10 @@ class RouteFlight: UIView, MKMapViewDelegate, CLLocationManagerDelegate {
     
     func mapViewWillStartLoadingMap(_ mapView: MKMapView) {
         
-        routeToAirport.showsCompass =  true
-        routeToAirport.showsTraffic = true
-        routeToAirport.showsBuildings = true
-        routeToAirport.showsPointsOfInterest = true
+        flightRoute.showsCompass =  true
+        flightRoute.showsTraffic = true
+        flightRoute.showsBuildings = true
+        flightRoute.showsPointsOfInterest = true
         
     }
     
