@@ -30,16 +30,24 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        ConnectionDataService.getItems { (status, connections) in
-            if status {
-                self.connections = connections
-                self.fromSearchTextfield.filterDelegate = self
-                self.toSearchTextfield.filterDelegate = self
-            } else {
-                print("failed to get connections")
+        do {
+            let connectionService = ConnectionDataService.init()
+            connectionService.getItems { (status, connections, errorMessage) in
+                if status {
+                    self.connections = connections
+                    self.fromSearchTextfield.filterDelegate = self
+                    self.toSearchTextfield.filterDelegate = self
+                } else {
+                    print("failed to get connections")
+
+                }
+                
             }
-            
+        } catch {
+            print("failed to get connections")
+
         }
+
     }
 
 }
@@ -54,13 +62,12 @@ extension ViewController: filterSearch {
             //remove duplicates from departure
             self.departureResults = self.departureResults.unique { $0.from }
             
-            fromSearchTextfield?.departureResults = self.departureResults
-            toSearchTextfield?.destinationResults = self.destinationResults
-            
+            fromSearchTextfield?.updateRoutingArrays(departureResults: self.departureResults)
+            toSearchTextfield?.updateRoutingArrays(destinationResults: self.destinationResults)
 
         case SearchTextField.to:
             //filter destination text field
-            toSearchTextfield?.destinationResults = self.destinationResults.filter{ ($0.to.range(of: searchText, options: .caseInsensitive) != nil) }
+            toSearchTextfield?.updateRoutingArrays(destinationResults: self.destinationResults.filter{ ($0.to.range(of: searchText, options: .caseInsensitive) != nil) })
         }
     }
     func sendPrice(price: Int) {
@@ -82,8 +89,9 @@ extension ViewController: filterSearch {
     }
     
     func resetTextFieldArrays() {
-        fromSearchTextfield?.departureResults = self.departureResults
-        toSearchTextfield?.destinationResults = self.destinationResults
+        fromSearchTextfield?.updateRoutingArrays(departureResults: self.departureResults)
+        toSearchTextfield?.updateRoutingArrays(destinationResults: self.destinationResults)
+        
     }
     
     func clearMap() {

@@ -18,20 +18,75 @@ class TUIMobilityTests: XCTestCase {
         flightVC = vc
         _ = flightVC.view // To call viewDidLoad
     
-        let exp = expectation(description: "Check we get some data")
-        ConnectionDataService.getItems { (success, result) in
-            self.flightVC.connections = result
-            exp.fulfill()
-        }
     }
 
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
+    
+    func getTestData() {
+        let exp = expectation(description: "Check we get some data")
+        let connectionService = ConnectionDataService.init()
+        connectionService.getItems { (success, result, errorMessage) in
+            self.flightVC.connections = result
+            exp.fulfill()
+        }
+    }
 
+    func testInvalidURL() {
+        // other setup
+        let exp = expectation(description: "Check we get some data")
+        var error: UrlConnectionError!
+        var connections: [Connection] = []
+        var successful: Bool = false
+        
+        let connectionService = ConnectionDataService.init(connectionsURL: "wwgle.com")
+        connectionService.getItems { (success, result, errorMessage) in
+            exp.fulfill()
+            error = errorMessage
+            connections = result
+            successful = success
+        }
+        
+        waitForExpectations(timeout: 10) { error in
+            if let error = error {
+                XCTFail("waitForExpectationsWithTimeout errored: \(error)")
+            }
+            XCTAssertTrue(connections.isEmpty)
+            XCTAssert(successful == false, "\(error?.localizedDescription ?? "")")
+            
+        }
+    }
+    
+    func testValidURLNoJSon() {
+        // other setup
+        let exp = expectation(description: "Check we get some data")
+        var error: UrlConnectionError!
+        var connections: [Connection] = []
+        var successful: Bool = false
+
+        let connectionService = ConnectionDataService.init(connectionsURL: "https://www.bbc.com")
+        connectionService.getItems { (success, result, errorMessage) in
+            exp.fulfill()
+            error = errorMessage
+            connections = result
+            successful = success
+        }
+        
+        waitForExpectations(timeout: 10) { error in
+            if let error = error {
+                XCTFail("waitForExpectationsWithTimeout errored: \(error)")
+            }
+            XCTAssertTrue(connections.isEmpty)
+            XCTAssert(error?.localizedDescription == "Data is empty", "\(error?.localizedDescription ?? "")")
+            
+        }
+        
+    }
+    
     func testWeGetData() {
         // other setup
-        
+        getTestData()
         waitForExpectations(timeout: 10) { error in
             if let error = error {
                 XCTFail("waitForExpectationsWithTimeout errored: \(error)")
@@ -41,7 +96,7 @@ class TUIMobilityTests: XCTestCase {
     }
     
     func testFilterForDeparturesFromLondon() {
-
+        getTestData()
         waitForExpectations(timeout: 10) { error in
             if let error = error {
                 XCTFail("waitForExpectationsWithTimeout errored: \(error)")
@@ -54,7 +109,7 @@ class TUIMobilityTests: XCTestCase {
     }
 
     func testFilterForDestiniationsFromLondon() {
-
+        getTestData()
         waitForExpectations(timeout: 10) { error in
             if let error = error {
                 XCTFail("waitForExpectationsWithTimeout errored: \(error)")
@@ -65,6 +120,7 @@ class TUIMobilityTests: XCTestCase {
     }
     
     func testToCheckRouteIsCleared() {
+        getTestData()
         waitForExpectations(timeout: 10) { error in
             if let error = error {
                 XCTFail("waitForExpectationsWithTimeout errored: \(error)")
@@ -82,7 +138,7 @@ class TUIMobilityTests: XCTestCase {
     }
     
     func testToCheckPriceFromLondonToPortoIsCorrect() {
-        
+        getTestData()
         waitForExpectations(timeout: 10) { error in
             if let error = error {
                 XCTFail("waitForExpectationsWithTimeout errored: \(error)")

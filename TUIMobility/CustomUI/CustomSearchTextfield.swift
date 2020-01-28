@@ -27,16 +27,26 @@ enum SearchTextField: Int {
 
 class CustomSearchTextField: UITextField, UITextFieldDelegate{
     weak var filterDelegate: filterSearch?
+    
     private var tableView: UITableView?
     private var textFieldType: SearchTextField = .to
-    var departureResults: [Connection] = [Connection]() {
+    private var departureResults: [Connection] = [Connection]() {
         didSet{
             self.tableView?.reloadData()
         }
     }
-    var destinationResults: [Connection] = [Connection](){
+    private var destinationResults: [Connection] = [Connection](){
         didSet{
             self.tableView?.reloadData()
+        }
+    }
+    
+    func updateRoutingArrays(destinationResults: [Connection]? = nil, departureResults: [Connection]? = nil) {
+        if let destinationResults = destinationResults {
+            self.destinationResults = destinationResults
+        }
+        if let departureResults = departureResults {
+            self.departureResults = departureResults
         }
     }
     

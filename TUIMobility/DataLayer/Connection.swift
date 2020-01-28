@@ -7,7 +7,6 @@
 //
 
 import Foundation
-var connectionsURL = "https://raw.githubusercontent.com/TuiMobilityHub/ios-code-challenge/master/connections.json"
 
 struct Response: Codable {
     var connections: [Connection]
@@ -34,13 +33,27 @@ struct to: Codable {
     var long: Double
 }
 
-typealias response =  (Bool,[Connection]) -> Void
+typealias response =  (Bool,[Connection],UrlConnectionError?) -> Void
+var baseURL = "https://raw.githubusercontent.com/TuiMobilityHub/ios-code-challenge/master/connections.json"
+
+enum UrlConnectionError: Error {
+    case invalid(String)
+    case connectionError(String)
+    case dataError(String)
+    case decodingError(String)
+}
 
 class ConnectionDataService {
-    public static func getItems(onCompletion: @escaping response) {
+    private var connectionsURL: String
+    init(connectionsURL: String = baseURL) {
+        self.connectionsURL = connectionsURL
+    }
+    
+    func getItems(onCompletion: @escaping response) {
         
         //create the url with NSURL
         guard let url = URL(string: connectionsURL) else {
+           onCompletion(false, [], UrlConnectionError.invalid("\(connectionsURL) is not a valid URL"))
            return
         }
         
@@ -51,12 +64,12 @@ class ConnectionDataService {
         let task = session.dataTask(with: url, completionHandler: { data, response, error in
 
             guard error == nil else {
-                onCompletion(false, [])
+                onCompletion(false, [], UrlConnectionError.connectionError(error?.localizedDescription ?? ""))
                 return
             }
             
             guard let data = data else {
-                onCompletion(false, [])
+                onCompletion(false, [], UrlConnectionError.dataError("Data is empty"))
                 return
             }
             
@@ -64,42 +77,14 @@ class ConnectionDataService {
                 let decoder = JSONDecoder()
                 let connectionsAll = try decoder.decode(Response.self,
                                                         from: data)
-                onCompletion(true, connectionsAll.connections)
+                onCompletion(true, connectionsAll.connections, nil)
                 
             } catch {
-                onCompletion(false, [])
+                onCompletion(false, [], UrlConnectionError.decodingError("Decoding problem with JSON"))
             }
             
         })
         task.resume()
-    }
-    
-    public static func getStaticJson(onCompletion: @escaping response) {
-        if let path = Bundle.main.path(forResource: "Connections", ofType: "json") {
-            do {
-                let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
-                let jsonResult = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves)
-                if let jsonResult = jsonResult as? Dictionary<String, AnyObject>,
-                    let connections = jsonResult["connections"] as? [Any] {
-                    // do stuff
-                    let jsonData = try JSONSerialization.data(withJSONObject: connections, options: [])
-
-                    do {
-                        let decoder = JSONDecoder()
-                        let connectionsAll = try decoder.decode([Connection].self,
-                                                             from: jsonData )
-                        onCompletion(true, connectionsAll)
-                        
-                    } catch {
-                        onCompletion(false, [])
-                    }
-                }
-            } catch {
-                // handle error
-                onCompletion(false, [])
-
-            }
-        }
     }
 
 }
