@@ -71,6 +71,10 @@ class CustomSearchTextField: UITextField, UITextFieldDelegate{
             self.departureResults = []
             self.destinationResults = []
             self.filterDelegate?.clearRoute()
+        } else {
+//            filterDelegate?.filter(textfieldType: textFieldType, searchText: self.text!)
+//            updateSearchTableView()
+//            tableView?.isHidden = false
         }
         return true
     }
