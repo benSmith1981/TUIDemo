@@ -41,7 +41,7 @@ class CustomSearchTextField: UITextField, UITextFieldDelegate{
         }
     }
     
-    func updateRoutingArrays(destinationResults: [Connection]? = nil, departureResults: [Connection]? = nil) {
+    public func updateRoutingArrays(destinationResults: [Connection]? = nil, departureResults: [Connection]? = nil) {
         if let destinationResults = destinationResults {
             self.destinationResults = destinationResults
         }
@@ -81,15 +81,11 @@ class CustomSearchTextField: UITextField, UITextFieldDelegate{
             self.departureResults = []
             self.destinationResults = []
             self.filterDelegate?.clearRoute()
-        } else {
-//            filterDelegate?.filter(textfieldType: textFieldType, searchText: self.text!)
-//            updateSearchTableView()
-//            tableView?.isHidden = false
         }
         return true
     }
     
-    @objc open func textFieldDidChange(){
+    @objc func textFieldDidChange(){
         filterDelegate?.filter(textfieldType: textFieldType, searchText: self.text!)
         updateSearchTableView()
         tableView?.isHidden = false
@@ -100,7 +96,7 @@ class CustomSearchTextField: UITextField, UITextFieldDelegate{
 
 extension CustomSearchTextField: UITableViewDelegate, UITableViewDataSource {
     // MARK: TableViewDataSource methods
-    public func numberOfSections(in tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
@@ -128,7 +124,7 @@ extension CustomSearchTextField: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
-    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("selected row")
 
         switch textFieldType {
@@ -145,12 +141,12 @@ extension CustomSearchTextField: UITableViewDelegate, UITableViewDataSource {
         self.endEditing(true)
     }
     
-    func calculateRouteDetails() {
+    private func calculateRouteDetails() {
         self.filterDelegate?.sendPrice(price: destinationResults[self.tableView?.indexPathForSelectedRow?.row ?? 0].price)
         self.filterDelegate?.calculateRoute(for: self.destinationResults[self.tableView?.indexPathForSelectedRow?.row ?? 0])
     }
     
-    func buildSearchTableView() {
+    private func buildSearchTableView() {
         
         if let tableView = tableView {
             tableView.register(UITableViewCell.self, forCellReuseIdentifier: "CustomSearchTextFieldCell")
@@ -166,7 +162,7 @@ extension CustomSearchTextField: UITableViewDelegate, UITableViewDataSource {
     }
     
     // Updating SearchtableView
-    func updateSearchTableView() {
+    private func updateSearchTableView() {
         
         if let tableView = tableView {
             superview?.bringSubviewToFront(tableView)

@@ -11,7 +11,7 @@ import MapKit
 import CoreLocation
 import Foundation
 
-class RouteFlight: UIView, MKMapViewDelegate, CLLocationManagerDelegate {
+class RouteFlight: UIView, CLLocationManagerDelegate {
     
     @IBOutlet weak var flightRoute: MKMapView!
     private var fromCoord = CLLocationCoordinate2D()
@@ -22,7 +22,7 @@ class RouteFlight: UIView, MKMapViewDelegate, CLLocationManagerDelegate {
         self.flightRoute.delegate = self
     }
     
-    func route(flightConnection: Connection) {
+    public func route(flightConnection: Connection) {
         fromCoord = CLLocationCoordinate2D(latitude: flightConnection.coordinates.from.lat,
                                            longitude: flightConnection.coordinates.from.long)
         toCoord = CLLocationCoordinate2D(latitude: flightConnection.coordinates.to.lat,
@@ -36,7 +36,7 @@ class RouteFlight: UIView, MKMapViewDelegate, CLLocationManagerDelegate {
         }
     }
     
-    func addAnnotations(flightConnection: Connection) {
+    private func addAnnotations(flightConnection: Connection) {
         let fromAnnotation = MKPointAnnotation.init()
         let toAnnotation = MKPointAnnotation.init()
         toAnnotation.title = flightConnection.to
@@ -46,7 +46,7 @@ class RouteFlight: UIView, MKMapViewDelegate, CLLocationManagerDelegate {
         self.flightRoute.addAnnotations([fromAnnotation,toAnnotation])
     }
     
-    func getRegionRectFor(route: MKPolyline) ->  MKMapRect{
+    private func getRegionRectFor(route: MKPolyline) ->  MKMapRect{
         var regionRect = route.boundingMapRect
         
         let wPadding = regionRect.size.width * 0.5
@@ -59,6 +59,9 @@ class RouteFlight: UIView, MKMapViewDelegate, CLLocationManagerDelegate {
         regionRect.origin.y -= hPadding / 2
         return regionRect
     }
+    
+}
+extension RouteFlight: MKMapViewDelegate {
     
     func mapViewWillStartLoadingMap(_ mapView: MKMapView) {
         
