@@ -82,16 +82,11 @@ extension ViewController: filterSearch {
     func clearRoute() {
         self.destinationResults = []
         self.departureResults = []
-        resetTextFieldArrays()
+        self.toSearchTextfield.updateRoutingArrays(destinationResults: [], departureResults: [])
+        self.fromSearchTextfield.updateRoutingArrays(destinationResults: [], departureResults: [])
         toSearchTextfield?.text = ""
         self.priceLabel.text = "£"
         self.clearMap()
-    }
-    
-    func resetTextFieldArrays() {
-        fromSearchTextfield?.updateRoutingArrays(departureResults: self.departureResults)
-        toSearchTextfield?.updateRoutingArrays(destinationResults: self.destinationResults)
-        
     }
     
     func clearMap() {

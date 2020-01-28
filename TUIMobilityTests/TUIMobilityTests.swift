@@ -102,7 +102,7 @@ class TUIMobilityTests: XCTestCase {
                 XCTFail("waitForExpectationsWithTimeout errored: \(error)")
             }
             self.flightVC.filter(textfieldType: .from, searchText: "London")
-            XCTAssertEqual(self.flightVC.fromSearchTextfield.departureResults.count == 1, true)
+            XCTAssertEqual(self.flightVC.departureResults.count == 1, true)
         }
 
 
@@ -115,7 +115,7 @@ class TUIMobilityTests: XCTestCase {
                 XCTFail("waitForExpectationsWithTimeout errored: \(error)")
             }
             self.flightVC.filter(textfieldType: .from, searchText: "London")
-            XCTAssertEqual(self.flightVC.toSearchTextfield.destinationResults.count == 3, true)
+            XCTAssertEqual(self.flightVC.destinationResults.count == 3, true)
         }
     }
     
@@ -125,11 +125,16 @@ class TUIMobilityTests: XCTestCase {
             if let error = error {
                 XCTFail("waitForExpectationsWithTimeout errored: \(error)")
             }
+            ///if
             self.flightVC.filter(textfieldType: .from, searchText: "London")
             self.flightVC.toSearchTextfield.text = self.flightVC.destinationResults[0].to
+            
+            ///when
             self.flightVC.clearRoute()
-            XCTAssertEqual(self.flightVC.toSearchTextfield.destinationResults.count == 0
-                && self.flightVC.toSearchTextfield.departureResults.count == 0
+            
+            //then
+            XCTAssertEqual(self.flightVC.destinationResults.count == 0
+                && self.flightVC.destinationResults.count == 0
                 && self.flightVC.departureResults.count == 0
                 && self.flightVC.destinationResults.count == 0
                 && self.flightVC.priceLabel?.text == "£"
