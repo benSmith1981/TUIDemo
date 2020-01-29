@@ -30,24 +30,18 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        do {
-            let connectionService = ConnectionDataService.init()
-            connectionService.getItems { (status, connections, errorMessage) in
-                if status {
-                    self.connections = connections
-                    self.fromSearchTextfield.filterDelegate = self
-                    self.toSearchTextfield.filterDelegate = self
-                } else {
-                    print("failed to get connections")
+        let connectionService = ConnectionDataService.init()
+        connectionService.getItems { (status, connections, errorMessage) in
+            if status {
+                self.connections = connections
+                self.fromSearchTextfield.filterDelegate = self
+                self.toSearchTextfield.filterDelegate = self
+            } else {
+                print("failed to get connections")
 
-                }
-                
             }
-        } catch {
-            print("failed to get connections")
-
+            
         }
-
     }
 
 }
